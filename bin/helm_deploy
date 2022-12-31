@@ -31,4 +31,4 @@ helm upgrade \
     --namespace="$namespace" \
     --create-namespace \
     "$release_name" \
-    chart
+    ./dev/helm

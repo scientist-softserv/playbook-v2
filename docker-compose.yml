@@ -23,6 +23,10 @@ services:
       - .env
     # NOTE: all common env variables moved to .env
     environment:
+      - DB_PORT=5432
+      - DB_USER=wikijs
+      - DB_PASS=wikijsrocks
+      - DB_NAME=wiki
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=wiki.test
     depends_on:
@@ -36,7 +40,7 @@ services:
   db:
     image: postgres:11
     environment:
-      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_DATABASE=${DB_NAME}
       - POSTGRES_PASSWORD=${DB_PASS}
       - POSTGRES_USER=${DB_USER}
     volumes:

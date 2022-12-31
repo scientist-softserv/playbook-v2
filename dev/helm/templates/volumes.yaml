@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "wiki.fullname" . }}-volume
+  labels:
+    app: {{ template "wiki.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    component: config
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "ebs"
+  resources:
+    requests:
+      storage: 10Gi

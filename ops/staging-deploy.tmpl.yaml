@@ -8,12 +8,14 @@ image:
 imagePullSecrets:
   - name: github
 
-livenessProbe:
-  enabled: false
-readinessProbe:
-  enabled: false
-startupProbe:
-  enabled: false
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # # Annotations to add to the service account
+  # annotations: {}
+  # # The name of the service account to use.
+  # # If not set and create is true, a name is generated using the fullname template
+  # name:
 
 podSecurityContext:
   runAsUser: 1001
@@ -21,21 +23,31 @@ podSecurityContext:
   fsGroup: 101
   fsGroupChangePolicy: "OnRootMismatch"
 
+service:
+  type: ClusterIP
+  port: 80
+  # Annotations applied for services such as externalDNS or
+  # service type LoadBalancer
+  # type: LoadBalancer
+  # httpsPort: 443
+  # annotations: {}
+  # loadBalancerIP: 172.16.0.1
+
 ingress:
   enabled: true
+  className: "nginx"
   annotations: {
-    kubernetes.io/ingress.class: "nginx",
     nginx.ingress.kubernetes.io/proxy-body-size: "0",
     cert-manager.io/cluster-issuer: letsencrypt-production-dns
   }
   hosts:
-    - host: playbook.notch8.cloud
+    - host: playbook-v2.notch8.cloud
       paths:
         - path: "/"
-  tls: []
-   - secretName: playbook-v2-staging-tls
-     hosts:
-       - playbook-v2.notch8.cloud
+  tls:
+    - hosts:
+        - playbook-v2.notch8.cloud
+      secretName: playbook-v2-staging-tls
 
 resources:
   limits:
@@ -45,25 +57,64 @@ resources:
     cpu: 250m
     memory: 1Gi
 
-volumeMounts: []
-
-volumes: []
-
 sideload:
   enabled: false
 
-postgresql:
-  enabled: false
+# ## This will override the postgresql chart values
+# externalPostgresql:
+# #   # note: ?sslmode=require => ?ssl=true
+#   databaseURL: postgresql://postgres:$POSTGRES_PASSWORD@pg-postgresql.staging-postgres.svc.cluster.local:5432/playbook-v2-staging?ssl=true
+# #   # For self signed CAs, like DigitalOcean
+#   NODE_TLS_REJECT_UNAUTHORIZED: "0"
 
-postgresql.postgresqlDatabase: playbook-v2-staging
-postgresql.postgresqlHost: pg-postgresql.staging-postgres.svc.cluster.local
-postgresql.postgresqlPassword: $POSTGRES_PASSWORD
-postgresql.postgresqlPort: 5432
-postgresql.postgresqlUser: postgres
-postgresql.persistence.enabled: true
-# postgresql.persistence.existingClaim: 
-postgresql.persistence.storageClass: ebs
-postgresql.persistence.size: 10 Gi
+## Configuration values for the postgresql dependency.
+## ref: https://github.com/kubernetes/charts/blob/master/stable/postgresql/README.md
+##
+postgresql:
+  ## Use the PostgreSQL chart dependency.
+  ## Set to false if bringing your own PostgreSQL, and set secret value postgresql-uri.
+  ##
+  enabled: false
+  ## ssl enforce SSL communication with PostgresSQL
+  ## Default to false
+  ##
+  ssl: false
+  ## ca Certificate of Authority
+  ## Default to empty, point to location of CA
+  ##
+  # ca: "path to ca"
+  postgresqlHost: pg-postgresql.staging-postgres.svc.cluster.local
+  postgresqlPort: 5432
+  postgresqlUser: postgres
+  postgresqlDatabase: playbook-v2-staging
+  postgresqlPassword: $POSTGRES_PASSWORD
+  ## Persistent Volume Storage configuration.
+  ## ref: https://kubernetes.io/docs/user-guide/persistent-volumes
+  ##
+  replication:
+    enabled: false
+  persistence:
+    enabled: true
+
+extraEnvVars:
+  - name: DB_TYPE
+    value: postgres
+  - name: DB_HOST
+    value: pg-postgresql.staging-postgres.svc.cluster.local
+  - name: DB_PORT
+    value: '5432'
+  - name: DB_USER
+    value: postgres
+  - name: DB_PASS
+    value: $POSTGRES_PASSWORD
+  - name: DB_NAME
+    value: playbook-v2-staging
+  - name: POSTGRES_PASSWORD
+    value: $POSTGRES_PASSWORD
+  - name: POSTGRES_USER
+    value: postgres
+  - name: POSTGRES_DATABASE
+    value: playbook-v2-staging
 
 nginx:
   enabled: true
