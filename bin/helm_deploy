@@ -15,9 +15,6 @@ fi
 release_name="${1}"
 namespace="${2}"
 
-DEPLOY_IMAGE="${DEPLOY_IMAGE:-ghcr.io/scientist-softserv/playbook-v2}"
-DEPLOY_TAG="${DEPLOY_TAG:-latest}"
-
 helm repo add requarks https://charts.js.wiki
 helm repo update
 
@@ -25,10 +22,8 @@ helm upgrade \
     --install \
     --atomic \
     --timeout 15m0s \
-    --set image.repository="$DEPLOY_IMAGE" \
-    --set image.tag="$DEPLOY_TAG" \
     $HELM_EXTRA_ARGS \
     --namespace="$namespace" \
     --create-namespace \
     "$release_name" \
-    ./dev/helm
+    requarks/wiki

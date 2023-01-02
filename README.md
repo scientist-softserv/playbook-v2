@@ -11,7 +11,6 @@ Any changes made to client files and server files will need a server restart. Yo
 1. Clone the project from [Playbook-v2](https://scientist-softserv/playbook-v2).
 2. Run the following commands:
 ```bash
-docker compose build
 docker compose up
 docker compose exec web sh
 yarn   # only necessary the first time
@@ -39,3 +38,7 @@ Once you're ready to deploy your changes, you need to build the client assets in
 ```bash
 yarn build
 ```
+
+# Helm Deplyment
+
+Our deployments are helm based and setup through github actions.

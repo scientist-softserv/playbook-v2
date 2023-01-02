@@ -16,11 +16,6 @@ spec:
   {{- end }}
   ports:
     - port: {{ default "80" .Values.service.port}}
-      targetPort: http
+      targetPort: 3000
       protocol: TCP
-      name: http
-    - port: {{ default "443" .Values.service.httpsPort}}
-      targetPort: http
-      protocol: TCP
-      name: https
   selector: {{- include "wiki.selectorLabels" . | nindent 4}}

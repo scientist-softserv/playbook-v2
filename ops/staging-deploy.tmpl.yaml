@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/scientist-softserv/playbook-v2
-  tag: latest
+  repository: requarks/wiki
+  tag: 2.5
   imagePullPolicy: IfNotPresent
 
 imagePullSecrets:
@@ -60,41 +60,19 @@ resources:
 sideload:
   enabled: false
 
-# ## This will override the postgresql chart values
-# externalPostgresql:
-# #   # note: ?sslmode=require => ?ssl=true
-#   databaseURL: postgresql://postgres:$POSTGRES_PASSWORD@pg-postgresql.staging-postgres.svc.cluster.local:5432/playbook-v2-staging?ssl=true
-# #   # For self signed CAs, like DigitalOcean
-#   NODE_TLS_REJECT_UNAUTHORIZED: "0"
-
-## Configuration values for the postgresql dependency.
-## ref: https://github.com/kubernetes/charts/blob/master/stable/postgresql/README.md
-##
 postgresql:
-  ## Use the PostgreSQL chart dependency.
-  ## Set to false if bringing your own PostgreSQL, and set secret value postgresql-uri.
-  ##
   enabled: false
-  ## ssl enforce SSL communication with PostgresSQL
-  ## Default to false
-  ##
   ssl: false
-  ## ca Certificate of Authority
-  ## Default to empty, point to location of CA
-  ##
-  # ca: "path to ca"
   postgresqlHost: pg-postgresql.staging-postgres.svc.cluster.local
   postgresqlPort: 5432
   postgresqlUser: postgres
   postgresqlDatabase: playbook-v2-staging
   postgresqlPassword: $POSTGRES_PASSWORD
-  ## Persistent Volume Storage configuration.
-  ## ref: https://kubernetes.io/docs/user-guide/persistent-volumes
-  ##
   replication:
     enabled: false
   persistence:
     enabled: true
+    storageClass: ebs
 
 extraEnvVars:
   - name: DB_TYPE
