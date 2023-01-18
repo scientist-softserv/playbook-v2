@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_USER: ${DB_USER}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      local:
+
+  wiki:
+    image: ghcr.io/requarks/wiki:2
+    env_file:
+      - .env
+    environment:
+      VIRTUAL_PORT: 3000
+      VIRTUAL_HOST: wiki.test
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      local:
+
+volumes:
+  db-data:
+
+networks:
+  local:
