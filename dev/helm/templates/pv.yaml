@@ -14,4 +14,3 @@ spec:
     kind: PersistentVolumeClaim
     name: snapshot-backup-playbook-pvc-3538782b-b73c-11ea-b41a-06d20c3955ba
     namespace: playbook-v2-staging
-    storageClassName: ebs

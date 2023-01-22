@@ -10,7 +10,7 @@ metadata:
     heritage: "{{ .Release.Service }}"
     component: config
 spec:
-  storageClassName: ebs
+  storageClassName: ebs-sc
   dataSource:
     name: snapshot-backup-playbook-pvc-3538782b-b73c-11ea-b41a-06d20c3955ba
     kind: VolumeSnapshot
