@@ -72,7 +72,7 @@ postgresql:
     enabled: false
   persistence:
     enabled: true
-    storageClass: ebs-sc
+    storageClass: ebs
 
 extraEnvVars:
   - name: DB_TYPE
