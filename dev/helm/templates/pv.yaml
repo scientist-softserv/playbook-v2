@@ -6,7 +6,7 @@ spec:
   accessModes:
   - ReadWriteOnce
   awsElasticBlockStore:
-    volumeID: vol-0580029db6e624a72
+    volumeID: vol-0132fcccc454ff97d
   capacity:
     storage: 10Gi
   claimRef:
