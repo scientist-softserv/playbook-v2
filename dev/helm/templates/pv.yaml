@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: snapshot-manual-volume-backup
+  name: snapshot-backup-playbook-pvc-3538782b-b73c-11ea-b41a-06d20c3955ba
 spec:
   accessModes:
   - ReadWriteOnce
   awsElasticBlockStore:
-    volumeID: vol-0bf0245ce79dda5d1
+    volumeID: vol-0580029db6e624a72
   capacity:
     storage: 10Gi
   claimRef:
     apiVersion: v1
     kind: PersistentVolumeClaim
-    name: snapshot-manual-volume-backup
+    name: snapshot-backup-playbook-pvc-3538782b-b73c-11ea-b41a-06d20c3955ba
     namespace: playbook-v2-staging
-    storageClassName: aws-snapshot
+    storageClassName: ebs-sc

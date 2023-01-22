@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: snapshot-manual-volume-backup
+  name: snapshot-backup-playbook-pvc-3538782b-b73c-11ea-b41a-06d20c3955ba
   namespace: playbook-v2-staging
   labels:
     app: {{ template "wiki.fullname" . }}
