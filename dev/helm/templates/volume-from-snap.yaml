@@ -1,14 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: snapshot-backup-playbook-pvc-3538782b-b73c-11ea-b41a-06d20c3955ba
+  name: playbook-snap-1-22-23
   namespace: playbook-v2-staging
 spec:
-  storageClassName: ebs-sc
-  dataSource:
-    name: snapshot-backup-playbook-pvc-3538782b-b73c-11ea-b41a-06d20c3955ba
-    kind: VolumeSnapshot
-    apiGroup: snapshot.storage.k8s.io
+  storageClassName: ebs
   accessModes:
   - ReadWriteOnce
   resources:
