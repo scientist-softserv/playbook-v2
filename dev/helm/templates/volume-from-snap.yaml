@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: playbook-snap-1-22-23
+  namespace: playbook-v2-staging
+spec:
+  storageClassName: ebs
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
